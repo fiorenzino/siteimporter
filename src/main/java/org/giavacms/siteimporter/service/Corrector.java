@@ -1,10 +1,9 @@
-package by.giava.siteimporter.service;
+package org.giavacms.siteimporter.service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,13 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
+import org.giavacms.siteimporter.utils.HtmlCorrector;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import by.giava.siteimporter.utils.HtmlCorrector;
 
 import difflib.DiffRow;
 import difflib.DiffRowGenerator;
@@ -94,9 +89,10 @@ public class Corrector
    {
       List<String> lines = new LinkedList<String>();
       String line = "";
+      BufferedReader in = null;
       try
       {
-         BufferedReader in = new BufferedReader(new FileReader(filename));
+         in = new BufferedReader(new FileReader(filename));
          while ((line = in.readLine()) != null)
          {
             lines.add(line);
@@ -106,6 +102,20 @@ public class Corrector
       {
          e.printStackTrace();
       }
+      finally
+      {
+         if (in != null)
+            try
+            {
+               in.close();
+            }
+            catch (IOException e)
+            {
+               // TODO Auto-generated catch block
+               e.printStackTrace();
+            }
+      }
+
       return lines;
    }
 

@@ -1,4 +1,4 @@
-package by.giava.siteimporter.model;
+package org.giavacms.siteimporter.model;
 
 import org.jsoup.nodes.Document;
 

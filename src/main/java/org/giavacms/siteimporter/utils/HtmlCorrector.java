@@ -1,4 +1,4 @@
-package by.giava.siteimporter.utils;
+package org.giavacms.siteimporter.utils;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -8,11 +8,11 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.giavacms.siteimporter.model.Page;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import by.giava.siteimporter.model.Page;
 
 public class HtmlCorrector
 {

@@ -1,4 +1,4 @@
-package by.giava.siteimporter.service;
+package org.giavacms.siteimporter.service;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -12,25 +12,25 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.giavacms.siteimporter.model.Page;
+import org.giavacms.siteimporter.utils.HtmlCorrector;
 import org.jsoup.Jsoup;
 import org.jsoup.UnsupportedMimeTypeException;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import by.giava.siteimporter.model.Page;
-import by.giava.siteimporter.utils.HtmlCorrector;
 
 /**
  * Example program to list links from a URL.
  */
 public class Downloader
 {
-   static String WEB_SITE = "xxxx";
+   static String WEB_SITE = "WB077C7J0";
    // http://wbpreview.com/previews/WB0C4JJ9R/
    static Map<String, Page> pages = new HashMap<String, Page>();
-   static String host = "http://xxxx/";
-   static String url = "http://xxxx/index.html";
+   static String host = "http://wbpreview.com/";
+   static String url = "http://wbpreview.com/previews/WB077C7J0/index.html";
    // http://wbpreview.com/previews/WB02634G3/index.html
    static String FOLDER_SITES = "sites/";
    static int i = 0;
@@ -43,24 +43,31 @@ public class Downloader
       // http://www.arteinsieme.eu/docs/arte-insieme-collettiva-artisti-sensibili-2012.pdf
       for (Page page : pages.values())
       {
-         System.out.println(page.getUrl() + ": " + page.getInternalUrl());
+         if (page.getUrl().endsWith("html"))
+         {
+            System.out.println(page.getUrl() + ": " + page.getInternalUrl());
 
-         File siteFolder = new File(FOLDER_SITES + WEB_SITE + "/");
-         siteFolder.mkdir();
-         File imgFolder = new File(FOLDER_SITES + WEB_SITE + "/img");
-         imgFolder.mkdir();
-         File cssFolder = new File(FOLDER_SITES + WEB_SITE + "/css");
-         cssFolder.mkdir();
-         File embedFolder = new File(FOLDER_SITES + WEB_SITE + "/embed");
-         embedFolder.mkdir();
-         File jsFolder = new File(FOLDER_SITES + WEB_SITE + "/js");
-         jsFolder.mkdir();
-         Document doc = correggiAndScarica(page.getDocument(), siteFolder.getAbsolutePath() + "/");
+            File siteFolder = new File(FOLDER_SITES + WEB_SITE + "/");
+            siteFolder.mkdir();
+            File imgFolder = new File(FOLDER_SITES + WEB_SITE + "/img");
+            imgFolder.mkdir();
+            File cssFolder = new File(FOLDER_SITES + WEB_SITE + "/css");
+            cssFolder.mkdir();
+            File embedFolder = new File(FOLDER_SITES + WEB_SITE + "/embed");
+            embedFolder.mkdir();
+            File jsFolder = new File(FOLDER_SITES + WEB_SITE + "/js");
+            jsFolder.mkdir();
+            Document doc = correggiAndScarica(page.getDocument(), siteFolder.getAbsolutePath() + "/");
 
-         page.setDocument(doc);
-         HtmlCorrector.correggiLinks(doc, pages, host);
-         String content = HtmlCorrector.replaceNotPermitted(page.getDocument().html());
-         writeOnFile(content, siteFolder.getAbsolutePath() + "/" + page.getInternalUrl());
+            page.setDocument(doc);
+            HtmlCorrector.correggiLinks(doc, pages, host);
+            String content = HtmlCorrector.replaceNotPermitted(page.getDocument().html());
+            writeOnFile(content, siteFolder.getAbsolutePath() + "/" + page.getInternalUrl());
+         }
+         else
+         {
+            System.out.println(page.getUrl() + " - NON RIESCO A SCARICARE LA PAGINA");
+         }
       }
    }
 
